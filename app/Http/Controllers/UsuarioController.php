@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Rol;
 
 
@@ -94,15 +95,16 @@ class UsuarioController extends Controller
     public function destroy($cedula)
     {
         $usuario = Usuario::findOrFail($cedula);
-    
+
         // Verificar si el usuario que intenta borrar es el mismo que está logueado
-        if (auth()->user()->cedula == $usuario->cedula) {
+        $current = Auth::user();
+        if ($current && $current->cedula == $usuario->cedula) {
             return redirect()->route('usuarios.index')->with('error', 'No puedes eliminar tu propio usuario mientras estás logueado.');
         }
-    
+
         $usuario->delete();
-    
+
         return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente');
     }
-    
+
 }
