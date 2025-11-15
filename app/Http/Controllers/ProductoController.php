@@ -11,17 +11,34 @@ class ProductoController extends Controller
     // Mostrar lista de productos con búsqueda
     public function index(Request $request)
     {
-        $buscar = $request->input('buscar');
+        // Empezamos la consulta
+        $query = Producto::query();
 
-        $productos = Producto::when($buscar, function ($query, $buscar) {
-                return $query->where('nombre', 'like', "%$buscar%")
-                            ->orWhere('id', 'like', "%$buscar%")
-                            ->orWhere('marca', 'like', "%$buscar%")
-                            ->orWhere('tipo', 'like', "%$buscar%");
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(4);
+        // Verificamos si hay un término de búsqueda
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
 
+            // Agrupamos las condiciones de búsqueda
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nombre', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('marca', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('tipo', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('talla', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('color', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('detalle', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('precio', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('stock', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('precio_venta', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('precio_compra', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('ganancia', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('id', $searchTerm); // Permite buscar por ID exacto
+            });
+        }
+
+        // Obtenemos los productos ordenados y paginados
+        $productos = $query->latest()->paginate(10);
+
+        // Retornamos la vista con los productos y el término de búsqueda
         return view('productos.index', compact('productos'));
     }
 
@@ -53,6 +70,10 @@ class ProductoController extends Controller
             'detalle' => 'required|string|max:1000',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'precio_venta' => 'required|numeric|min:0',
+            'precio_compra' => 'required|numeric|min:0',
+            'ganancia' => 'required|numeric|min:0',
+            'imagen' => 'required|string|max:255',
         ]);
 
         Producto::create([
@@ -64,6 +85,10 @@ class ProductoController extends Controller
             'detalle' => $request->detalle,
             'precio' => $request->precio,
             'stock' => $request->stock,
+            'precio_venta' => $request->precio_venta,
+            'precio_compra' => $request->precio_compra,
+            'ganancia' => $request->ganancia,
+            'imagen' => $request->imagen,
         ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
@@ -97,9 +122,13 @@ class ProductoController extends Controller
             'detalle' => 'required|string|max:1000',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'precio_venta' => 'required|numeric|min:0',
+            'precio_compra' => 'required|numeric|min:0',
+            'ganancia' => 'required|numeric|min:0',
+            'imagen' => 'required|string|max:255',
         ]);
-        
-        
+
+
         $producto->update([
             'nombre' => $request->nombre,
             'marca' => $request->marca,
@@ -109,6 +138,10 @@ class ProductoController extends Controller
             'detalle' => $request->detalle,
             'precio' => $request->precio,
             'stock' => $request->stock,
+            'precio_venta' => $request->precio_venta,
+            'precio_compra' => $request->precio_compra,
+            'ganancia' => $request->ganancia,
+            'imagen' => $request->imagen,
         ]);
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');

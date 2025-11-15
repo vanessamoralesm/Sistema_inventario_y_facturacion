@@ -31,14 +31,21 @@
                 <label for="marca" class="form-label">Marca:</label>
                 <input type="text" name="marca" class="form-control" id="marca" required>
             </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="imagen" class="form-label">Foto:</label>
+                <input type="file" class="form-control" id="imagen" name="imagen" required>
+            </div>
         </div>
-    
+
+
+
         <!-- Detalle -->
         <div class="mb-3">
             <label for="detalle" class="form-label">Detalle del producto:</label>
             <textarea class="form-control" id="detalle" name="detalle" rows="2" required></textarea>
         </div>
-    
+
         <!-- Precio y Cantidad -->
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -49,8 +56,13 @@
                 <label for="stock" class="form-label">Cantidad disponible:</label>
                 <input type="number" class="form-control" id="stock" name="stock" min="0" required>
             </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="precio_compra" class="form-label">Precio de compra:</label>
+                <input type="number" class="form-control" id="precio_compra" name="precio_compra" min="0" step="0.01" required>
+            </div>
         </div>
-    
+
         <!-- Tipo de público -->
         <div class="mb-3">
             <label for="tipo" class="form-label">Tipo:</label>
@@ -62,7 +74,7 @@
                 <option value="mujer">Mujer</option>
             </select>
         </div>
-    
+
         <!-- Talla -->
         <div class="mb-3">
             <label for="talla" class="form-label">Talla:</label>
@@ -70,7 +82,7 @@
                 <option value="">Selecciona una talla</option>
             </select>
         </div>
-    
+
         <!-- Color -->
         <div class="mb-3">
             <label for="color" class="form-label">Color:</label>
@@ -110,7 +122,7 @@
             tallaSelect.innerHTML = '<option value="">Selecciona una talla</option>';
 
             let tallas = [];
-            
+
             if (tipo === 'niño' || tipo === 'niña') {
                 tallas = tallasNinos;
             } else if (tipo === 'hombre' || tipo === 'mujer') {

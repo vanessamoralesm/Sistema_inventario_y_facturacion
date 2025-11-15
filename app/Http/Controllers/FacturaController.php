@@ -37,7 +37,7 @@ class FacturaController extends Controller
 
     public function store(Request $request)
     {
-    
+
         $request->validate([
             'cedula_usuario' => 'required|exists:usuarios,cedula',
             'fecha' => 'required|date_format:Y-m-d H:i',
@@ -51,47 +51,51 @@ class FacturaController extends Controller
             'productos.*.required' => 'Debes agregar al menos un producto.',
             'productos.*.string' => 'El formato de los productos es inválido.'
         ]);
-    
+
         DB::beginTransaction();
-    
+
         try {
             $iva = 0.15;
-    
+
             $factura = new Factura();
             $factura->cedula_usuario = $request->cedula_usuario;
             $factura->fecha = \Carbon\Carbon::parse($request->fecha)->setTimezone('America/Managua');
             $factura->cedula_cliente = $request->cedula_cliente;
             $factura->metodo_pago = $request->metodo_pago;
             $factura->monto_recibido = $request->monto_recibido;
-    
+
+            if ($factura->monto_recibido < $factura->total) {
+                    throw new \Exception("El monto debe ser mayor al total: {$factura->total}");
+            }
+
             $suma = 0;
             $detalles = [];
-    
+
             foreach ($request->productos as $prodString) {
                 $parts = explode('|', $prodString);
                 if (count($parts) !== 5) {
                     throw new \Exception("Formato inválido en productos: $prodString");
                 }
-    
+
                 list($productoId, $cantidad, $precio, $descuento, $subtotal) = $parts;
-    
+
                 $cantidad = (float)$cantidad;
                 $precio = (float)$precio;
                 $descuento = (float)$descuento ?: 0;
                 $subtotalCalculado = $cantidad * $precio * (1 - $descuento / 100);
                 $subtotal = round($subtotalCalculado, 2);
-    
+
                 if (abs($subtotal - $subtotalCalculado) > 0.01) {
                     throw new \Exception("Subtotal calculado no coincide con el proporcionado para producto ID: $productoId");
                 }
-    
+
                 $producto = Producto::findOrFail($productoId);
                 if ($producto->stock < $cantidad) {
                     throw new \Exception("No hay stock suficiente para el producto: {$producto->nombre}");
                 }
-    
+
                 $suma += $subtotal;
-    
+
                 $detalles[] = [
                     'producto_id' => $productoId,
                     'cantidad' => $cantidad,
@@ -100,19 +104,19 @@ class FacturaController extends Controller
                     'subtotal' => $subtotal
                 ];
             }
-    
+
             $ivaCalculado = $suma * $iva;
             $total = $suma + $ivaCalculado;
-    
-            $factura->subtotal = $suma; 
+
+            $factura->subtotal = $suma;
             $factura->iva = $ivaCalculado;
             $factura->total = $total;
-    
+
             $vuelto = $request->monto_recibido - $total;
             $factura->vuelto = $vuelto >= 0 ? $vuelto : 0;
-    
+
             $factura->save();
-    
+
             foreach ($detalles as $detalle) {
                 $detalleFactura = new ProductoFactura();
                 $detalleFactura->factura_id = $factura->id;
@@ -122,17 +126,17 @@ class FacturaController extends Controller
                 $detalleFactura->descuento = $detalle['descuento'];
                 $detalleFactura->subtotal = $detalle['subtotal'];
                 $detalleFactura->save();
-    
+
                 $producto = Producto::find($detalle['producto_id']);
                 $producto->stock -= $detalle['cantidad'];
                 $producto->save();
             }
-    
+
             DB::commit();
-    
+
             return redirect()->route('facturas.show', $factura->id)
                 ->with('success', 'Factura emitida correctamente.');
-    
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error al emitir factura: ' . $e->getMessage(), [
@@ -164,5 +168,5 @@ class FacturaController extends Controller
         $pdf = Pdf::loadView('facturas.pdf', compact('factura', 'subtotal'));
         return $pdf->stream("factura_{$factura->id}.pdf");
     }
-    
+
 }

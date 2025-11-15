@@ -2,7 +2,7 @@
   <html lang="es">
   <head>
     <meta charset="UTF-8">
-    <title>Usuarios</title>
+    <title>GarMorel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <!-- Bootstrap-->
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('style2.css') }}">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
-    
+
   </head>
   <body class="cuerpo">
     <div class="logo">
@@ -31,7 +31,7 @@
             <li><a href="{{ route('facturas.index') }}"><i class="bi bi-receipt"></i><span>Factura</span></a></li>
             <li><a href="{{ route('clientes.index') }}"><i class="bi bi-people"></i><span>Clientes</span></a></li>
             <li><a href="{{ route('productos.index') }}"><i class="bi bi-box-seam"></i><span>Productos</span></a></li>
-          
+
             {{-- Solo mostrar Usuarios y Roles si NO es Vendedor --}}
             @if(strtolower(Auth::user()->rol->tipo) != 'vendedor')
               <li><a href="{{ route('usuarios.index') }}"><i class="bi bi-person"></i><span>Usuarios</span></a></li>
@@ -57,7 +57,7 @@
             <li><a class="dropdown-item" href="#">{{ Auth::user()->email }}</a></li>
             <li><a class="dropdown-item" href="#">{{ Auth::user()->rol->tipo ?? 'Sin rol' }}</a></li>
             <li><hr class="dropdown-divider"></li>
-            
+
             <li>
               <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -66,7 +66,7 @@
                 </button>
               </form>
             </li>
-                 
+
           </ul>
         </div>
         @endauth

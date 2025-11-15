@@ -18,6 +18,7 @@ class Producto extends Model
     protected $fillable = [
         'nombre', 'marca', 'tipo', 'talla',
         'color', 'detalle', 'precio','stock',
+        'precio_venta', 'precio_compra', 'ganancia', 'imagen',
     ];
 
     public function facturas()
@@ -26,5 +27,5 @@ class Producto extends Model
                     ->withPivot('cantidad', 'precio', 'descuento', 'subtotal')
                     ->withTimestamps();
     }
-    
+
 }
