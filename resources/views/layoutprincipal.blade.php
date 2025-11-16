@@ -181,7 +181,7 @@
 
                 <!-- NUEVA SECCIÓN: Estadísticas y Gráficas -->
                 <div class="pt-3 mt-3 border-t border-white/20">
-                    <a href=" " class="nav-item flex items-center gap-3 p-2 rounded-xl text-white hover:bg-white/10 transition-all duration-300 group">
+                    <a href="{{ route('estadisticas.index') }}" class="nav-item flex items-center gap-3 p-2 rounded-xl text-white hover:bg-white/10 transition-all duration-300 group">
                         <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all duration-300 flex-shrink-0">
                             <i class="bi bi-graph-up text-sm"></i>
                         </div>

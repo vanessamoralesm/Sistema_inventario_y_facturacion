@@ -11,6 +11,7 @@ use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\FacturaProductoController;
 use App\Http\Controllers\RespaldoController;
 use App\Http\Controllers\TiendaController;
+use App\Http\Controllers\EstadisticasController;
 // Ruta raíz, redirige según sesión
 Route::get('/', function () {
     return Auth::check()
@@ -94,3 +95,6 @@ Route::get('/respaldar', [RespaldoController::class, 'descargar'])->name('respal
     Route::get('/descargar-respaldo/{filename}', [RespaldoController::class, 'descargarArchivo'])->name('descargar.archivo');
     Route::get('/restaurar', [RespaldoController::class, 'vistaRestaurar'])->name('vista.restaurar');
     Route::post('/restaurar', [RespaldoController::class, 'restaurar'])->name('restaurar');
+
+// Ruta para las estadisticas
+Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
