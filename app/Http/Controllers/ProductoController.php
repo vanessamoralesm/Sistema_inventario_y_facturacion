@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -73,8 +74,15 @@ class ProductoController extends Controller
             'precio_venta' => 'required|numeric|min:0',
             'precio_compra' => 'required|numeric|min:0',
             'ganancia' => 'required|numeric|min:0',
-            'imagen' => 'required|string|max:255',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $datos = $request->except('imagen');
+
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('productos', 'public/IMG');
+            $datos['imagen'] = $path;
+        }
 
         Producto::create([
             'nombre' => $request->nombre,
@@ -125,9 +133,20 @@ class ProductoController extends Controller
             'precio_venta' => 'required|numeric|min:0',
             'precio_compra' => 'required|numeric|min:0',
             'ganancia' => 'required|numeric|min:0',
-            'imagen' => 'required|string|max:255',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $datos = $request->except(['_token', '_method', 'imagen']);
+
+
+        if ($request->hasFile('imagen')) {
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+
+            $path = $request->file('imagen')->store('productos', 'public/IMG');
+            $datos['imagen'] = $path;
+        }
 
         $producto->update([
             'nombre' => $request->nombre,
