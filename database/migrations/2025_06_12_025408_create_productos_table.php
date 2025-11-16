@@ -24,13 +24,18 @@ return new class extends Migration
             $table->text('detalle');
             $table->integer('stock');
 
+            $table->decimal('precio_venta', 10, 2);
+            $table->decimal('precio_compra', 10, 2);
+            $table->decimal('ganancia', 10, 2);
+            $table->string('imagen');
+
             $table->timestamps();
             $table->unique(['nombre', 'marca', 'tipo', 'talla', 'color']);
         });
 
     }
-    
-    
+
+
 
     /**
      * Reverse the migrations.

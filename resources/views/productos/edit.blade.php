@@ -17,7 +17,7 @@
 <br>
 
 <div class="container" style="max-width: 700px;">
-    <form action="{{ route('productos.update', $producto->id) }}" method="POST">
+    <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -32,6 +32,20 @@
             <div class="col-md-6 mb-3">
                 <label for="marca" class="form-label">Marca:</label>
                 <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca', $producto->marca) }}" required>
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+                <label for="imagen" class="form-label">Foto (Opcional):</label>
+                <input type="file" class="form-control" id="imagen" name="imagen">
+                <small class="form-text text-muted">Dejar vacío si no desea cambiar la imagen.</small>
+
+                @if($producto->imagen)
+                    <div class="mt-2">
+                        <label>Imagen actual:</label><br>
+                        <img src="{{ asset('IMG/' . $producto->imagen) }}" alt="Imagen actual" style="width: 100px; height: auto; border-radius: 8px;">
+                    </div>
+                @endif
             </div>
 
         </div>
@@ -51,6 +65,11 @@
             <div class="col-md-6 mb-3">
                 <label for="stock" class="form-label">Cantidad disponible:</label>
                 <input type="number" class="form-control" id="stock" name="stock" value="{{ old('stock', $producto->stock) }}" min="0" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="precio_compra" class="form-label">Precio de compra:</label>
+                <input type="number" class="form-control" id="precio_compra" name="precio_compra" value="{{ old('precio_compra', $producto->precio_compra) }}" min="0" step="0.01" required>
             </div>
         </div>
 

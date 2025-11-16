@@ -140,7 +140,7 @@
         {{-- Botones --}}
         <div class="row mt-4 d-flex justify-content-end">
             <div class="col-md-4 d-flex gap-4 justify-content-end">
-                <button type="submit" class="btn btn-primary">EMITIR FACTURA</button>
+                <button type="submit" class="btn btn-primary" id="btn-emitir-factura">EMITIR FACTURA</button>
                 <a href="{{ route('facturas.index') }}" class="btn btn-danger">CANCELAR</a>
             </div>
         </div>
@@ -194,10 +194,39 @@
     document.querySelector('input[name="monto_recibido"]').addEventListener('input', calcularVuelto);
 
     function calcularVuelto() {
-        const montoRecibido = parseFloat(document.querySelector('input[name="monto_recibido"]').value) || 0;
+        // 1. Obtener los elementos que necesitamos
+        const montoInput = document.querySelector('input[name="monto_recibido"]');
+        const vueltoInput = document.getElementById('vuelto');
+        const emitirBtn = document.getElementById('btn-emitir-factura'); 
+
+        // 2. Obtener los valores
+        const montoRecibido = parseFloat(montoInput.value) || 0;
         const total = parseFloat(document.getElementById('total').innerText) || 0;
+
+        // 3. Lógica de validación
         const vuelto = montoRecibido - total;
-        document.getElementById('vuelto').value = vuelto >= 0 ? vuelto.toFixed(2) : '0.00';
+
+        if (total === 0) {
+            // Caso 1: El carrito está vacío
+            vueltoInput.value = '0.00';
+            emitirBtn.disabled = true;
+            emitirBtn.innerText = 'Agregue productos';
+            montoInput.classList.remove('is-invalid');
+
+        } else if (montoRecibido >= total) {
+            // Caso 2: Válido, el monto es suficiente
+            vueltoInput.value = vuelto.toFixed(2);
+            emitirBtn.disabled = false;
+            emitirBtn.innerText = 'EMITIR FACTURA';
+            montoInput.classList.remove('is-invalid'); // Quita el borde rojo (Bootstrap)
+
+        } else {
+            // Caso 3: Inválido, el monto es insuficiente
+            vueltoInput.value = '0.00';
+            emitirBtn.disabled = true;
+            emitirBtn.innerText = 'Monto insuficiente';
+            montoInput.classList.add('is-invalid'); // Pone un borde rojo (Bootstrap)
+        }
     }
 
     function agregarProducto() {
