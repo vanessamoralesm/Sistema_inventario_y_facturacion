@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GarMorel - Sistema de Inventario</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -26,7 +26,7 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
+
         /* Estilos para móviles */
         @media (max-width: 768px) {
             .sidebar-mobile {
@@ -90,7 +90,7 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        
+
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -135,7 +135,7 @@
                         <p class="text-white/80 text-xs">Fashion Store</p>
                     </div>
                 </div>
-                
+
                 <button id="closeSidebar" class="md:hidden text-white hover:text-white/80 transition-colors" aria-label="Cerrar menú">
                     <i class="bi bi-x-lg text-lg"></i>
                 </button>
@@ -150,7 +150,7 @@
 
             <!-- Navigation Menu -->
             <nav class="p-3 space-y-1 flex-1 overflow-y-auto no-scrollbar" aria-label="Navegación principal">
-                
+
                 <a href="{{ route('dashboard') }}" class="nav-item flex items-center gap-3 p-2 rounded-xl text-white hover:bg-white/10 transition-all duration-300 group">
                     <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all duration-300 flex-shrink-0">
                         <i class="bi bi-house-door text-sm"></i>
@@ -188,11 +188,11 @@
                         <span class="font-medium nav-text text-sm">Estadísticas</span>
                     </a>
                 </div>
-                
+
                 @if(strtolower(Auth::user()->rol->tipo) != 'vendedor')
                 <!-- Separador visual -->
                 <div class="pt-3 mt-3 border-t border-white/20">
-                    
+
                     <a href="{{ route('usuarios.index') }}" class="nav-item flex items-center gap-3 p-2 rounded-xl text-white hover:bg-white/10 transition-all duration-300 group">
                         <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all duration-300 flex-shrink-0">
                             <i class="bi bi-person text-sm"></i>
@@ -231,13 +231,13 @@
                         <button id="toggleSidebarMobile" class="hidden md:flex text-primary hover:text-primary/80 transition-colors p-2" aria-label="Alternar barra lateral">
                             <i class="bi bi-layout-sidebar text-xl"></i>
                         </button>
-                        
+
                         <div>
                             <h2 class="text-lg md:text-xl font-bold text-gray-800">@yield('title', 'Dashboard')</h2>
                             <p class="text-gray-600 text-xs hidden md:block">Sistema de gestión</p>
                         </div>
                     </div>
-                    
+
                     @auth
                     <div class="flex items-center gap-3">
                         <div class="text-right hidden sm:block">
@@ -248,7 +248,7 @@
                             <button class="w-10 h-10 bg-primary rounded-2xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center text-sm" aria-label="Menú de usuario">
                                 {{ strtoupper(substr(Auth::user()->nombre, 0, 2)) }}
                             </button>
-                            
+
                             <div class="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                                 <div class="p-3 border-b border-gray-100">
                                     <p class="font-semibold text-gray-800 text-sm">{{ Auth::user()->nombre }}</p>
@@ -281,7 +281,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         // Elementos DOM
         const hamburgerMenu = document.getElementById('hamburgerMenu');
@@ -326,25 +326,25 @@
                 sidebar.classList.remove('sidebar-expanded');
                 sidebar.classList.add('sidebar-collapsed');
                 toggleIcon.style.transform = 'rotate(180deg)';
-                
+
                 navTexts.forEach(text => {
                     text.classList.add('nav-text-hidden');
                     text.classList.remove('nav-text-visible');
                 });
-                
+
                 if (sidebarText) sidebarText.style.display = 'none';
                 if (sidebarFooter) sidebarFooter.style.display = 'none';
-                
+
             } else {
                 sidebar.classList.remove('sidebar-collapsed');
                 sidebar.classList.add('sidebar-expanded');
                 toggleIcon.style.transform = 'rotate(0deg)';
-                
+
                 navTexts.forEach(text => {
                     text.classList.remove('nav-text-hidden');
                     text.classList.add('nav-text-visible');
                 });
-                
+
                 if (sidebarText) sidebarText.style.display = 'block';
                 if (sidebarFooter) sidebarFooter.style.display = 'block';
             }
@@ -354,7 +354,7 @@
         function handleResize() {
             if (window.innerWidth < 768) {
                 closeMobileSidebar();
-                
+
                 // En móviles, siempre mostrar el sidebar expandido
                 if (isSidebarCollapsed) {
                     isSidebarCollapsed = false;

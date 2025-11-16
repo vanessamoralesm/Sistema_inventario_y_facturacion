@@ -31,7 +31,14 @@
                 <label for="marca" class="form-label">Marca:</label>
                 <input type="text" name="marca" class="form-control" id="marca" required>
             </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="imagen" class="form-label">Foto:</label>
+                <input type="file" class="form-control" id="imagen" name="imagen" required>
+            </div>
         </div>
+
+
     
         <!-- Detalle -->
         <div class="mb-3">
@@ -48,6 +55,11 @@
             <div class="col-md-6 mb-3">
                 <label for="stock" class="form-label">Cantidad disponible:</label>
                 <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="precio_compra" class="form-label">Precio de compra:</label>
+                <input type="number" class="form-control" id="precio_compra" name="precio_compra" min="0" step="0.01" required>
             </div>
         </div>
     

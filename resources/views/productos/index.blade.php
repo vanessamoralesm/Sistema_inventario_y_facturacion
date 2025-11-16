@@ -30,9 +30,27 @@
 
     <!-- Buscar por nombre o ID -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <form action="{{ route('productos.index') }}" method="GET" class="d-flex w-50">
-            <input type="text" name="buscar" class="form-control me-2" placeholder="Nombre del producto o ID" value="{{ request('buscar') }}">
-            <button type="submit" class="btn btn-success">Buscar</button>
+        <form action="{{ route('productos.index') }}" method="GET">
+
+            <div class="input-group mb-2">
+                <input type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Buscar por ID, nombre, marca, tipo..."
+                    value="{{ request('search') }}">
+
+                <button type="submit" class="btn btn-succes">Buscar</button>
+            </div>
+
+            @if (request()->filled('search'))
+                <div class="d-flex">
+                    <a href="{{ route('productos.index') }}"
+                    class="btn btn-link btn-sm p-0 text-decoration-none">
+                        <small>Limpiar filtros</small>
+                    </a>
+                </div>
+            @endif
+
         </form>
     </div>
 
@@ -42,28 +60,35 @@
             <thead class="bg-light text-secondary text-uppercase">
                 <tr>
                     <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Imagen</th>
                     <th class="px-4 py-3">Nombre</th>
                     <th class="px-4 py-3">Marca</th>
                     <th class="px-4 py-3">Tipo</th>
                     <th class="px-4 py-3">Talla</th>
                     <th class="px-4 py-3">Color</th>
                     <th class="px-4 py-3">Detalle</th>
-                    <th class="px-4 py-3">Precio</th>
+                    <th class="px-4 py-3">Precio de compra</th>
+                    <th class="px-4 py-3">Precio de venta</th>
                     <th class="px-4 py-3">Cantidad Disponible</th>
                     <th class="px-4 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($productos as $producto)
-                <tr>
+                @php $stock_minimo = 5; @endphp
+                <tr class="{{ $producto->stock <= $stock_minimo ? 'table-danger' : '' }}">
                     <td class="px-4 py-3">{{ $producto->id }}</td>
+                    <td class="px-4 py-3">
+                        <img src="{{ asset($producto->imagen) }}" alt="Imagen de {{ $producto->nombre }}" width="50" height="50" style="object-fit: cover; border-radius: 8px;">
+                    </td>
                     <td class="px-4 py-3">{{ $producto->nombre }}</td>
                     <td class="px-4 py-3">{{ $producto->marca }}</td>
                     <td class="px-4 py-3">{{ $producto->tipo }}</td>
                     <td class="px-4 py-3">{{ $producto->talla }}</td>
                     <td class="px-4 py-3">{{ $producto->color }}</td>
                     <td class="px-4 py-3">{{ $producto->detalle }}</td>
-                    <td class="px-4 py-3">{{ $producto->precio }}</td>
+                    <td class="px-4 py-3">{{ $producto->precio_compra }}</td>
+                    <td class="px-4 py-3">{{ $producto->precio_venta}}</td>
                     <td class="px-4 py-3">{{ $producto->stock}}</td>
                     <td class="px-6 py-4 flex justify-center gap-2">
                         @if(strtolower(Auth::user()->rol->tipo) != 'vendedor')
@@ -89,6 +114,9 @@
                                 </svg>
                             </button>
                         </form>
+                        @if ($producto->stock <= $stock_minimo)
+                            <span class="badge bg-danger ms-2">¡Poco Stock!</span>
+                        @endif
                         @endif
                     </td>
                     
