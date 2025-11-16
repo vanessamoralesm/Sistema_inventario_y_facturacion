@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nombre');
-            $table->string('marca');
-            $table->string('tipo');  // ej. Niño, Niña, Hombre, Mujer
-            $table->string('talla');      // ej. S, M, L, 4, 6, etc.
-            $table->string('color');      // ej. Rojo, Azul, Negro, etc.
+            $table->string('nombre', 100);   // antes 255
+            $table->string('marca', 100);
+            $table->string('tipo', 50);      // ej. Niño, Niña, Hombre, Mujer
+            $table->string('talla', 10);     // ej. S, M, L, 4, 6, etc.
+            $table->string('color', 50);     // ej. Rojo, Azul, Negro, etc.
+
             $table->decimal('precio', 10, 2);
             $table->text('detalle');
             $table->integer('stock');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->timestamps();
             $table->unique(['nombre', 'marca', 'tipo', 'talla', 'color']);
         });
+
     }
     
     
