@@ -64,10 +64,6 @@ class FacturaController extends Controller
             $factura->metodo_pago = $request->metodo_pago;
             $factura->monto_recibido = $request->monto_recibido;
 
-            if ($factura->monto_recibido < $factura->total) {
-                    throw new \Exception("El monto debe ser mayor al total: {$factura->total}");
-            }
-
             $suma = 0;
             $detalles = [];
 
@@ -107,6 +103,10 @@ class FacturaController extends Controller
 
             $ivaCalculado = $suma * $iva;
             $total = $suma + $ivaCalculado;
+
+            if ($request->monto_recibido < $total) {
+                throw new \Exception("El monto recibido ($request->monto_recibido) es menor que el total a pagar ($total).");
+            }
 
             $factura->subtotal = $suma;
             $factura->iva = $ivaCalculado;
