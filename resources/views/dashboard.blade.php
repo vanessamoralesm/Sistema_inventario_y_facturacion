@@ -108,13 +108,8 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <p class="text-gray-600 text-xs font-medium truncate">Ventas Hoy</p>
-                    <p class="text-base md:text-lg font-bold text-gray-800 truncate">$2,847</p>
+                    <p class="text-base md:text-lg font-bold text-gray-800 truncate"> ${{ number_format($ventasHoy, 2) }} </p>
                 </div>
-            </div>
-            <div class="mt-1">
-                <span class="text-green-600 text-xs font-medium">
-                    <i class="bi bi-arrow-up-short"></i>12.5%
-                </span>
             </div>
         </div>
 
@@ -126,13 +121,9 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <p class="text-gray-600 text-xs font-medium truncate">Facturas</p>
-                    <p class="text-base md:text-lg font-bold text-gray-800 truncate">156</p>
+                    <p class="text-base md:text-lg font-bold text-gray-800 truncate"> {{ $facturasHoy }} </p>
+
                 </div>
-            </div>
-            <div class="mt-1">
-                <span class="text-green-600 text-xs font-medium">
-                    <i class="bi bi-arrow-up-short"></i>8.3%
-                </span>
             </div>
         </div>
 
@@ -144,13 +135,9 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <p class="text-gray-600 text-xs font-medium truncate">Clientes</p>
-                    <p class="text-base md:text-lg font-bold text-gray-800 truncate">892</p>
+                    <p class="text-base md:text-lg font-bold text-gray-800 truncate"> {{ $totalClientes }} </p>
+
                 </div>
-            </div>
-            <div class="mt-1">
-                <span class="text-green-600 text-xs font-medium">
-                    <i class="bi bi-arrow-up-short"></i>5.2%
-                </span>
             </div>
         </div>
 
@@ -162,13 +149,8 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <p class="text-gray-600 text-xs font-medium truncate">Productos</p>
-                    <p class="text-base md:text-lg font-bold text-gray-800 truncate">342</p>
+                    <p class="text-base md:text-lg font-bold text-gray-800 truncate"> {{ $totalProductos }} </p>
                 </div>
-            </div>
-            <div class="mt-1">
-                <span class="text-green-600 text-xs font-medium">
-                    <i class="bi bi-arrow-up-short"></i>3.1%
-                </span>
             </div>
         </div>
     </div>

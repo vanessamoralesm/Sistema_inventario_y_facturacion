@@ -12,6 +12,7 @@ use App\Http\Controllers\FacturaProductoController;
 use App\Http\Controllers\RespaldoController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\EstadisticasController;
+use App\Http\Controllers\DashboardController;
 // Ruta raíz, redirige según sesión
 Route::get('/', function () {
     return Auth::check()
@@ -98,3 +99,8 @@ Route::get('/respaldar', [RespaldoController::class, 'descargar'])->name('respal
 
 // Ruta para las estadisticas
 Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');
+
+// Ruta para el dashbord
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
