@@ -271,9 +271,30 @@
         }
     }
 
-    // Validación en tiempo real para la cédula (solo números)
+    // Validación en tiempo real para la cédula 
     document.getElementById('cedula')?.addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
+        
+        let value = this.value.replace(/[^0-9a-zA-Z]/g, '').toUpperCase();
+
+        if (value.length === 14 && /[^A-Z]/.test(value.charAt(13))) {
+            value = value.substring(0, 13);
+        }
+        value = value.substring(0, 14);
+        let formattedValue = '';
+
+        if (value.length > 0) {
+            formattedValue = value.substring(0, 3);
+        }
+        if (value.length > 3) {
+            formattedValue += '-' + value.substring(3, 9);
+        }
+        if (value.length > 9) {
+            formattedValue += '-' + value.substring(9, 13);
+        }
+        if (value.length > 13) {
+            formattedValue += value.substring(13, 14);
+        }
+        this.value = formattedValue;
     });
 
     // Efecto de carga suave

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('tipo', 50);      // ej. Niño, Niña, Hombre, Mujer
             $table->string('talla', 10);     // ej. S, M, L, 4, 6, etc.
             $table->string('color', 50);     // ej. Rojo, Azul, Negro, etc.
-
-            $table->decimal('precio', 10, 2);
+            
             $table->text('detalle');
             $table->integer('stock');
 

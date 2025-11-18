@@ -17,14 +17,14 @@ class Producto extends Model
 
     protected $fillable = [
         'nombre', 'marca', 'tipo', 'talla',
-        'color', 'detalle', 'precio','stock',
+        'color', 'detalle','stock',
         'precio_venta', 'precio_compra', 'ganancia', 'imagen',
     ];
 
     public function facturas()
     {
         return $this->belongsToMany(Factura::class, 'producto_factura', 'producto_id', 'factura_id')
-                    ->withPivot('cantidad', 'precio', 'descuento', 'subtotal')
+                    ->withPivot('cantidad', 'descuento', 'subtotal')
                     ->withTimestamps();
     }
 

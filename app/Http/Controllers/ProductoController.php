@@ -5,41 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
     // Mostrar lista de productos con búsqueda
     public function index(Request $request)
     {
-        // Empezamos la consulta
         $query = Producto::query();
 
-        // Verificamos si hay un término de búsqueda
         if ($request->filled('search')) {
             $searchTerm = $request->search;
 
-            // Agrupamos las condiciones de búsqueda
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('nombre', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('marca', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('tipo', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('talla', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('color', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('detalle', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('precio', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('stock', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('precio_venta', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('precio_compra', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('ganancia', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('id', $searchTerm); // Permite buscar por ID exacto
+                    ->orWhere('marca', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('tipo', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('talla', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('color', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('detalle', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('precio', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('stock', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('precio_venta', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('precio_compra', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('ganancia', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('id', $searchTerm);
             });
         }
 
-        // Obtenemos los productos ordenados y paginados
         $productos = $query->latest()->paginate(10);
 
-        // Retornamos la vista con los productos y el término de búsqueda
         return view('productos.index', compact('productos'));
     }
 
@@ -48,6 +42,7 @@ class ProductoController extends Controller
     {
         return view('productos.create');
     }
+
 
     // Almacenar nuevo producto
     public function store(Request $request)
@@ -59,9 +54,9 @@ class ProductoController extends Controller
                 'max:255',
                 Rule::unique('productos')->where(function ($query) use ($request) {
                     return $query->where('marca', $request->marca)
-                                 ->where('tipo', $request->tipo)
-                                 ->where('talla', $request->talla)
-                                 ->where('color', $request->color);
+                        ->where('tipo', $request->tipo)
+                        ->where('talla', $request->talla)
+                        ->where('color', $request->color);
                 }),
             ],
             'marca' => 'required|string|max:255',
@@ -69,7 +64,6 @@ class ProductoController extends Controller
             'talla' => 'required|string|max:10',
             'color' => 'required|string|max:50',
             'detalle' => 'required|string|max:1000',
-            'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'precio_venta' => 'required|numeric|min:0',
             'precio_compra' => 'required|numeric|min:0',
@@ -79,28 +73,20 @@ class ProductoController extends Controller
 
         $datos = $request->except('imagen');
 
+        /** GUARDAR IMAGEN EN public/IMG */
         if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('productos', 'public/IMG');
-            $datos['imagen'] = $path;
+            $file = $request->file('imagen');
+            $nombre = time() . '_' . $file->getClientOriginalName();  
+            $file->move(public_path('IMG'), $nombre);
+            $datos['imagen'] = $nombre;
         }
 
-        Producto::create([
-            'nombre' => $request->nombre,
-            'marca' => $request->marca,
-            'tipo' => $request->tipo,
-            'talla' => $request->talla,
-            'color' => $request->color,
-            'detalle' => $request->detalle,
-            'precio' => $request->precio,
-            'stock' => $request->stock,
-            'precio_venta' => $request->precio_venta,
-            'precio_compra' => $request->precio_compra,
-            'ganancia' => $request->ganancia,
-            'imagen' => $request->imagen,
-        ]);
+        Producto::create($datos);
 
-        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+        return redirect()->route('productos.index')
+            ->with('success', 'Producto creado correctamente.');
     }
+
 
     // Mostrar formulario de edición
     public function edit(Producto $producto)
@@ -108,13 +94,15 @@ class ProductoController extends Controller
         return view('productos.edit', compact('producto'));
     }
 
-    // Mostrar detalles de un producto
+
+    // Mostrar detalles del producto
     public function show(Producto $producto)
     {
         return view('productos.show', compact('producto'));
     }
 
-    // Actualizar producto existente
+
+    // Actualizar producto
     public function update(Request $request, Producto $producto)
     {
         $request->validate([
@@ -124,9 +112,9 @@ class ProductoController extends Controller
                 'max:255',
                 Rule::unique('productos')->ignore($producto->id)->where(function ($query) use ($request) {
                     return $query->where('marca', $request->marca)
-                                 ->where('tipo', $request->tipo)
-                                 ->where('talla', $request->talla)
-                                 ->where('color', $request->color);
+                        ->where('tipo', $request->tipo)
+                        ->where('talla', $request->talla)
+                        ->where('color', $request->color);
                 }),
             ],
             'marca' => 'required|string|max:255',
@@ -134,7 +122,6 @@ class ProductoController extends Controller
             'talla' => 'required|string|max:10',
             'color' => 'required|string|max:50',
             'detalle' => 'required|string|max:1000',
-            'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'precio_venta' => 'required|numeric|min:0',
             'precio_compra' => 'required|numeric|min:0',
@@ -142,41 +129,39 @@ class ProductoController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $datos = $request->except(['_token', '_method', 'imagen']);
+        $datos = $request->except('imagen');
 
-
+        /** ACTUALIZAR IMAGEN EN public/IMG */
         if ($request->hasFile('imagen')) {
-            if ($producto->imagen) {
-                Storage::disk('public')->delete($producto->imagen);
+            // Borrar la imagen anterior si existe
+            if ($producto->imagen && file_exists(public_path('IMG/' . $producto->imagen))) {
+                unlink(public_path('IMG/' . $producto->imagen));
             }
 
-            $path = $request->file('imagen')->store('productos', 'public/IMG');
-            $datos['imagen'] = $path;
+            $file = $request->file('imagen');
+            $nombre = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('IMG'), $nombre);
+            $datos['imagen'] = $nombre;
         }
 
-        $producto->update([
-            'nombre' => $request->nombre,
-            'marca' => $request->marca,
-            'tipo' => $request->tipo,
-            'talla' => $request->talla,
-            'color' => $request->color,
-            'detalle' => $request->detalle,
-            'precio' => $request->precio,
-            'stock' => $request->stock,
-            'precio_venta' => $request->precio_venta,
-            'precio_compra' => $request->precio_compra,
-            'ganancia' => $request->ganancia,
-            'imagen' => $request->imagen,
-        ]);
+        $producto->update($datos);
 
-        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
+        return redirect()->route('productos.index')
+            ->with('success', 'Producto actualizado correctamente.');
     }
+
 
     // Eliminar producto
     public function destroy(Producto $producto)
     {
+        // Eliminar imagen física
+        if ($producto->imagen && file_exists(public_path('IMG/' . $producto->imagen))) {
+            unlink(public_path('IMG/' . $producto->imagen));
+        }
+
         $producto->delete();
 
-        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
+        return redirect()->route('productos.index')
+            ->with('success', 'Producto eliminado correctamente.');
     }
 }

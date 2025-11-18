@@ -91,7 +91,7 @@
                                    value="{{ old('cedula') }}"
                                    class="w-full px-3 py-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-gray-50"
                                    maxlength="20"
-                                   placeholder="Ej: 1234567890"
+                                   placeholder="Número de cédula"
                                    required>
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                                 <i class="fas fa-id-card text-sm"></i>

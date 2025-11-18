@@ -18,7 +18,6 @@ class ProductoSeeder extends Seeder
         Producto::insert([
             [
                 'nombre' => 'Pantalón',
-                'precio' => 700.00,
                 'detalle' => 'Algodón',
                 'stock' => 10,
                 'talla' => '6', // Niño
@@ -34,7 +33,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Camisa',
-                'precio' => 300.00,
                 'detalle' => 'Algodón',
                 'stock' => 20,
                 'talla' => 'XL', // Adulto
@@ -50,7 +48,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Vestido niña',
-                'precio' => 450.00,
                 'detalle' => 'Seda',
                 'stock' => 15,
                 'talla' => '8', // Niño
@@ -66,7 +63,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Chaqueta',
-                'precio' => 1200.00,
                 'detalle' => 'Cuero sintético',
                 'stock' => 5,
                 'talla' => 'M', // Adulto
@@ -82,7 +78,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Blusa',
-                'precio' => 250.00,
                 'detalle' => 'Poliéster',
                 'stock' => 30,
                 'talla' => 'S', // Adulto
@@ -98,7 +93,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Jeans',
-                'precio' => 800.00,
                 'detalle' => 'Mezclilla',
                 'stock' => 12,
                 'talla' => '32', // adulto
@@ -114,7 +108,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Falda',
-                'precio' => 350.00,
                 'detalle' => 'Algodón',
                 'stock' => 18,
                 'talla' => 'L', // Adulto
@@ -130,7 +123,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Suéter niño',
-                'precio' => 400.00,
                 'detalle' => 'Lana',
                 'stock' => 8,
                 'talla' => '10', // Niño
@@ -146,7 +138,6 @@ class ProductoSeeder extends Seeder
             ],
             [
                 'nombre' => 'Pijama mujer',
-                'precio' => 500.00,
                 'detalle' => 'Algodón suave',
                 'stock' => 22,
                 'talla' => 'XXL', // Adulto

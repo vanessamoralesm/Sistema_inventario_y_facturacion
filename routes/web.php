@@ -99,6 +99,9 @@ Route::get('/respaldar', [RespaldoController::class, 'descargar'])->name('respal
     Route::get('/descargar-respaldo/{filename}', [RespaldoController::class, 'descargarArchivo'])->name('descargar.archivo');
     Route::get('/restaurar', [RespaldoController::class, 'vistaRestaurar'])->name('vista.restaurar');
     Route::post('/restaurar', [RespaldoController::class, 'restaurar'])->name('restaurar');
+// Asegúrate de que tus rutas estén así:
+Route::get('/respaldos/restaurar', [RespaldoController::class, 'vistaRestaurar'])->name('respaldo.restaurar');
+Route::post('/respaldos/restaurar', [RespaldoController::class, 'restaurar'])->name('restaurar');
 
 // Ruta para las estadisticas
 Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas.index');

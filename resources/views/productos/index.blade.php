@@ -163,9 +163,9 @@
                             <div class="flex items-start justify-between mb-4">
                                 <div class="flex items-center space-x-3">
                                     <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow overflow-hidden">
-                                        <img src="{{ asset($producto->imagen) }}" 
-                                             alt="{{ $producto->nombre }}" 
-                                             class="w-10 h-10 object-cover rounded">
+                                        <img src="{{ asset('IMG/' . $producto->imagen) }}" 
+                                            alt="{{ $producto->nombre }}" 
+                                            class="w-10 h-10 object-cover rounded">
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-800 text-sm leading-tight">{{ $producto->nombre }}</h3>

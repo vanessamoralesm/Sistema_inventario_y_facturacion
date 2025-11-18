@@ -31,9 +31,9 @@
                 <div class="flex items-center space-x-4">
                     <div class="relative">
                         <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
-                            <img src="{{ asset($producto->imagen) }}" 
-                                 alt="{{ $producto->nombre }}" 
-                                 class="w-14 h-14 rounded-full object-cover border-2 border-white">
+                            <img src="{{ asset('IMG/' . $producto->imagen) }}" 
+                                alt="{{ $producto->nombre }}" 
+                                class="w-10 h-10 object-cover rounded">
                         </div>
                         <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
                             <i class="fas fa-info-circle text-white text-xs"></i>
@@ -69,9 +69,8 @@
                 <div class="bg-white rounded-xl shadow-lg border border-purple-100 p-6 mb-6">
                     <div class="flex flex-col items-center">
                         <div class="w-48 h-48 bg-gray-100 rounded-lg overflow-hidden shadow-sm mb-4">
-                            <img src="{{ asset($producto->imagen) }}" 
-                                 alt="{{ $producto->nombre }}" 
-                                 class="w-full h-full object-cover">
+                            <img src="{{ asset('IMG/' . $producto->imagen) }}" 
+                                alt="{{ $producto->nombre }}">
                         </div>
                         <div class="text-center">
                             <h2 class="text-xl font-bold text-gray-800 mb-2">{{ $producto->nombre }}</h2>

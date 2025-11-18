@@ -311,9 +311,9 @@
                     @if($producto->imagen)
                         <div class="mt-3">
                             <p class="text-sm font-medium text-gray-700 mb-2">Imagen actual:</p>
-                            <img src="{{ asset($producto->imagen) }}" 
-                                 alt="Imagen actual de {{ $producto->nombre }}" 
-                                 class="w-32 h-32 object-cover rounded-lg border border-gray-300 shadow-sm">
+                            <img src="{{ asset('IMG/' . $producto->imagen) }}" 
+                                alt="{{ $producto->nombre }}" 
+                                class="w-32 h-32 object-cover rounded-lg border border-gray-300 shadow-sm">
                         </div>
                     @endif
                 </div>
