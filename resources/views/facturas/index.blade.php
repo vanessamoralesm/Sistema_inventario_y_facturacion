@@ -1,110 +1,310 @@
 @extends('layoutprincipal')
 
+@section('title', 'Facturas')
 @section('contenido')
-<br>
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page" style="color: #3d3a3a;">Facturas</li>
-    </ol>
-</nav>
+<div class="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-6">
+            <ol class="flex items-center space-x-2 text-sm px-4 py-3 border border-purple-100">
+                <li>
+                    <a href="{{ route('dashboard') }}" class="text-purple-600 hover:text-purple-800 transition-colors flex items-center font-medium">
+                        <i class="fas fa-home mr-2 text-purple-500"></i>
+                        Inicio
+                    </a>
+                </li>
+                <li class="flex items-center text-gray-400">
+                    <i class="fas fa-chevron-right text-xs mx-2"></i>
+                    <span class="text-gray-700 font-semibold">Facturas</span>
+                </li>
+            </ol>
+        </nav>
 
-<div class="logo_buttom d-flex align-items-center justify-content-between mb-4" style="padding: 20px;">
-    <!-- IMG + Título -->
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="{{ asset('IMG/factura.gif') }}" alt="facturass" width="150" height="150" style="border-radius: 50%; object-fit: cover;">
-        <h5 class="text-big" style="margin: 0;"><strong>Comprobantes</strong></h5>
-    </div>
-
-    <!-- Botón agregar factura -->
-    <div>
-        <a href="{{ route('facturas.create') }}" class="btn btn-danger animated-button" style="min-width: 150px;">
-            Nueva Factura
-        </a>
-    </div>
-</div>
-
-<div class="container" style="max-width: 1200px; margin: 0 auto;">
-
-    <!-- Buscar solo por ID -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <form action="{{ route('facturas.index') }}" method="GET" class="d-flex w-50">
-            <input type="text" name="buscar" class="form-control me-2" placeholder="Buscar por ID de factura" value="{{ request('buscar') }}">
-            <button type="submit" class="btn btn-success">Buscar</button>
-        </form>
-    </div>
-
-    <div class="bg-white shadow rounded-lg overflow-auto">
-        <table class="table table-hover text-sm text-start align-middle">
-            <thead class="bg-light text-secondary text-uppercase">
-                <tr>
-                    <th class="px-4 py-3">ID</th>
-                    <th class="px-4 py-3">Fecha</th>
-                    <th class="px-4 py-3">Cliente</th>
-                    <th class="px-4 py-3">Vendedor</th>
-                    <th class="px-4 py-3">Total</th>
-                    <th class="px-4 py-3">Método de Pago</th>
-                    <th class="px-4 py-3 text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($facturas as $factura)
-                <tr>
-                    <td class="px-4 py-3">{{ $factura->id }}</td>
-                    <td class="px-4 py-3">{{ $factura->created_at->format('d/m/Y H:i') }}</td>
-                    <td class="px-4 py-3">{{ $factura->cliente->nombre ?? 'N/A' }}</td>
-                    <td class="px-4 py-3">{{ $factura->usuario->nombre ?? 'N/A' }}</td>
-                    <td class="px-4 py-3">C$ {{ number_format($factura->total, 2) }}</td>
-                    <td class="px-4 py-3">{{ $factura->metodo_pago }}</td>
-                    <td class="px-6 py-4 flex justify-center gap-2">
-                        <!-- Botón Ver -->
-                        <a href="{{ route('facturas.show', $factura->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md" title="Ver">
-                            <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                              </svg>
-                        </a>
-
-                        <!-- Botón PDF -->
-                        <a href="{{ route('facturas.pdf', $factura->id) }}" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-md" title="PDF">
-                            <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="currentColor" class="bi bi-file-earmark-pdf-fill" viewBox="0 0 16 16">
-                                <path d="M5.523 12.424q.21-.124.459-.238a8 8 0 0 1-.45.606c-.28.337-.498.516-.635.572l-.035.012a.3.3 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548m2.455-1.647q-.178.037-.356.078a21 21 0 0 0 .5-1.05 12 12 0 0 0 .51.858q-.326.048-.654.114m2.525.939a4 4 0 0 1-.435-.41q.344.007.612.054c.317.057.466.147.518.209a.1.1 0 0 1 .026.064.44.44 0 0 1-.06.2.3.3 0 0 1-.094.124.1.1 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256M8.278 6.97c-.04.244-.108.524-.2.829a5 5 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.5.5 0 0 1 .145-.04c.013.03.028.092.032.198q.008.183-.038.465z"/>
-                                <path fill-rule="evenodd" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.7 11.7 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.86.86 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.84.84 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.8 5.8 0 0 0-1.335-.05 11 11 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.24 1.24 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a20 20 0 0 1-1.062 2.227 7.7 7.7 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103"/>
-                              </svg>
-                        </a>
-
-                        <!-- Botón Eliminar solo para admin -->
-
-                        @if(strtolower(Auth::user()->rol->tipo) != 'vendedor')
-                        <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta factura?')" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md" title="Eliminar">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon">
-                                    <path d="M3 6h18"/>
-                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                                    <line x1="10" x2="10" y1="11" y2="17"/>
-                                    <line x1="14" x2="14" y1="11" y2="17"/>
-                                </svg>
-                            </button>
-                        </form>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center">No hay facturas registradas.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-        <!-- Paginación -->
-        <div class="px-4 py-3 text-muted">
-            {{ $facturas->appends(request()->query())->links() }}
+        <!-- Header -->
+        <div class="bg-white rounded-xl shadow-lg border border-purple-100 p-6 mb-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                    <div class="relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                            <img src="{{ asset('IMG/factura.gif') }}" 
+                                 alt="Facturas" 
+                                 class="w-14 h-14 rounded-full object-cover border-2 border-white">
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                            <i class="fas fa-file-invoice text-white text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800 mb-1">Gestión de Facturas</h1>
+                        <p class="text-gray-600 text-sm">Administra y consulta todos los comprobantes</p>
+                    </div>
+                </div>
+                
+                <!-- Botón nueva factura -->
+                <a href="{{ route('facturas.create') }}" 
+                   class="px-5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors text-sm font-medium flex items-center space-x-2">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Nueva Factura</span>
+                </a>
+            </div>
         </div>
 
+        <!-- Buscador Reducido -->
+        <div class="bg-white rounded-lg shadow-sm border border-purple-100 p-4 mb-4">
+            <form action="{{ route('facturas.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-1 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400 text-sm"></i>
+                    </div>
+                    <input type="text" 
+                        name="buscar" 
+                        value="{{ request('buscar') }}"
+                        class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        placeholder="Buscar por ID de factura">
+                </div>
+                <button type="submit" 
+                        class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2 text-sm">
+                    <i class="fas fa-search"></i>
+                    <span>Buscar</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Tabla -->
+        <div class="bg-white rounded-xl shadow-lg border border-purple-100 overflow-hidden">
+            <!-- Tabla Header -->
+            <div class="bg-purple-500 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-receipt text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Lista de Facturas</h2>
+                            <p class="text-purple-100 text-xs">Total: {{ $facturas->total() }} facturas</p>
+                        </div>
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <span class="text-white text-sm font-medium">{{ $facturas->count() }} resultados</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla Content -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr class="text-purple-900 text-sm font-semibold">
+                            <th class="px-6 py-4 text-left">ID</th>
+                            <th class="px-6 py-4 text-left">Fecha</th>
+                            <th class="px-6 py-4 text-left">Cliente</th>
+                            <th class="px-6 py-4 text-left">Vendedor</th>
+                            <th class="px-6 py-4 text-left">Total</th>
+                            <th class="px-6 py-4 text-left">Método de Pago</th>
+                            <th class="px-6 py-4 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @forelse($facturas as $factura)
+                        <tr class="hover:bg-purple-50 transition-colors duration-150">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    #{{ $factura->id }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                <div class="flex flex-col space-y-1">
+                                    <div class="flex items-center space-x-1">
+                                        <i class="fas fa-calendar text-purple-400 text-xs"></i>
+                                        <span>{{ $factura->created_at->format('d/m/Y') }}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-1 text-xs text-gray-500">
+                                        <i class="fas fa-clock text-gray-400 text-xs"></i>
+                                        <span>{{ $factura->created_at->format('H:i') }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user text-purple-400 text-xs"></i>
+                                    <span>{{ $factura->cliente->nombre ?? 'N/A' }}</span>
+                                </div>
+                                @if($factura->cliente->rtn ?? false)
+                                <div class="text-xs text-gray-500 mt-1">RTN: {{ $factura->cliente->rtn }}</div>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        {{ substr($factura->usuario->nombre ?? 'N/A', 0, 1) }}
+                                    </div>
+                                    <span class="truncate max-w-[120px]">{{ $factura->usuario->nombre ?? 'N/A' }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-semibold text-green-600">
+                                C$ {{ number_format($factura->total, 2) }}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                @php
+                                    $metodoColors = [
+                                        'efectivo' => 'bg-green-100 text-green-800',
+                                        'tarjeta' => 'bg-blue-100 text-blue-800',
+                                        'transferencia' => 'bg-purple-100 text-purple-800',
+                                    ];
+                                    $color = $metodoColors[strtolower($factura->metodo_pago)] ?? 'bg-gray-100 text-gray-800';
+                                @endphp
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $color }}">
+                                    <i class="fas 
+                                        @if(strtolower($factura->metodo_pago) == 'efectivo') fa-money-bill-wave 
+                                        @elseif(strtolower($factura->metodo_pago) == 'tarjeta') fa-credit-card 
+                                        @elseif(strtolower($factura->metodo_pago) == 'transferencia') fa-university 
+                                        @else fa-wallet @endif
+                                        mr-1 text-xs">
+                                    </i>
+                                    {{ ucfirst($factura->metodo_pago) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center space-x-2">
+                                    <!-- Ver -->
+                                    <a href="{{ route('facturas.show', $factura->id) }}" 
+                                       class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-200 flex items-center justify-center w-10 h-10"
+                                       title="Ver factura">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </a>
+
+                                    <!-- PDF -->
+                                    <a href="{{ route('facturas.pdf', $factura->id) }}" 
+                                       class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors duration-200 flex items-center justify-center w-10 h-10"
+                                       title="Descargar PDF">
+                                        <i class="fas fa-file-pdf text-sm"></i>
+                                    </a>
+
+                                    <!-- Eliminar (solo para admin) -->
+                                    @if(strtolower(Auth::user()->rol->tipo) != 'vendedor')
+                                    <form action="{{ route('facturas.destroy', $factura->id) }}" method="POST" 
+                                          onsubmit="return confirm('¿Estás seguro de eliminar esta factura?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors duration-200 flex items-center justify-center w-10 h-10"
+                                                title="Eliminar factura">
+                                            <i class="fas fa-trash text-sm"></i>
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-8 text-center">
+                                <div class="flex flex-col items-center space-y-3 text-gray-500">
+                                    <i class="fas fa-file-invoice text-4xl text-gray-300"></i>
+                                    <p class="text-lg font-medium">No se encontraron facturas</p>
+                                    <p class="text-sm">No hay facturas registradas que coincidan con tu búsqueda.</p>
+                                    <a href="{{ route('facturas.create') }}" 
+                                       class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
+                                        <i class="fas fa-file-invoice-dollar mr-2"></i>Crear primera factura
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            @if($facturas->hasPages())
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                {{ $facturas->appends(request()->query())->links() }}
+            </div>
+            @endif
+        </div>
     </div>
 </div>
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    /* Animación suave para los hover */
+    .transition-colors {
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Estilos para la paginación de Laravel */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .pagination .page-item {
+        list-style: none;
+    }
+
+    .pagination .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        color: #6b7280;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+        font-size: 0.875rem;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #f3f4f6;
+        border-color: #9ca3af;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #8b5cf6;
+        border-color: #8b5cf6;
+        color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #9ca3af;
+        cursor: not-allowed;
+        background-color: #f9fafb;
+    }
+</style>
+
+<script>
+    // Script para mejorar la experiencia de usuario
+    document.addEventListener('DOMContentLoaded', function() {
+        // Agregar confirmación antes de eliminar (doble seguridad)
+        const deleteForms = document.querySelectorAll('form[onsubmit]');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('⚠️ ¿Estás completamente seguro de eliminar esta factura?\nEsta acción no se puede deshacer.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Efecto de carga suave
+        const table = document.querySelector('table');
+        if (table) {
+            table.style.opacity = '0';
+            setTimeout(() => {
+                table.style.transition = 'opacity 0.3s ease-in-out';
+                table.style.opacity = '1';
+            }, 100);
+        }
+    });
+</script>
 @endsection

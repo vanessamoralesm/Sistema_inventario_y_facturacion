@@ -108,6 +108,12 @@ class ProductoController extends Controller
         return view('productos.edit', compact('producto'));
     }
 
+    // Mostrar detalles de un producto
+    public function show(Producto $producto)
+    {
+        return view('productos.show', compact('producto'));
+    }
+
     // Actualizar producto existente
     public function update(Request $request, Producto $producto)
     {
